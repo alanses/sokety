@@ -31,10 +31,34 @@
 </template>
 
 <script>
+import Echo from "laravel-echo";
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+
+  created() {
+    window.io = require('socket.io-client');
+
+    var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5MmMzMTVhZS02YmRkLTQ3MjYtOGY0Mi1jODY3MjEzMzA0NDMiLCJqdGkiOiJmZWUyYTZlMjg1ZTVhNDc4MDFkNzM3MDk1ZmZhZDM3MjVjYzBiZGRiODZlOWU1MDBiYzQwY2IxZjU0MWUyNTRhOWRlZjdiZDQ5OTRlY2RiOCIsImlhdCI6IjE2MTM2NjU4MDAuMzEwODUwIiwibmJmIjoiMTYxMzY2NTgwMC4zMTA4NTIiLCJleHAiOiIxNjQ1MjAxODAwLjMwNjYwMyIsInN1YiI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInNjb3BlcyI6W119.GW7Fa-uUpRwvDuLykJUqI8a0shA_0P_GKLXyBJN7-WzxhjPzGdZwqxCngPzWvrlZ951Zaq8pRnFBSEDC4rM6Ok5v4wdhWA25q1YWUbIZP9lTzTcy39wTXW7097w6VrAefvpy3mgcLtWBAGhAwVNEBLUeVUPL-qUFWU82ICSSjn2MtTruE84TCNYafQJzKAdtEztUH8ZW7am3gfEMmYzBBnodN9aoQDcY8cXMmLHct_3UHWefU8AnJs5irN7YkhlMhGwKXdGsbmtpQOPfFdcmmV7rkEYnm6gVIw1c7bQl8YPQcHGpGrQduzhTWqdqfFly1XPSWCx-o4HpDrNxeKvpmp2bPwnOFbUhafPVNyiedUt9Jy8dZuBW3OqK7CuKI9hfL2UVPPB8vkXsFUeq7M4PcZQCk0c_wEBfiNgQkaY157u1kZcuz2ULFId0RMME6UhNOrB0jKDeISma492tLN7QUOzNdNzF1Y4X_L1TM1KqlMfY3ocyXkHAY8xADLzcUsOQcNelq8kTZdDriIF8MHKtf0gf9IMu_j0rh62hVwANwqBuOeDELA7Uy703AFESyukmvCOB2Nge3hmn7WNF2r82UN7t3M_5iF1nX55gxp9n9AOsMC2hd2hMr2MCi2eCfc69bVwUlPJJ4BRF8eRGWBYj2zNJfDHa8lBcSnnfxAsAxNE';
+
+    window.Echo = new Echo({
+      broadcaster: 'socket.io',
+      host: 'http://localhost:6001',
+      auth: {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      },
+      namespace: 'App.Events.Notifications'
+    });
+
+    window.Echo.channel('laravel_database_private-notification.user.00000000-0000-0000-0000-000000000000')
+        .listen('NotificationEvent', (e => {
+          console.log(e)
+        }))
   }
 }
 </script>
