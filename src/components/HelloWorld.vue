@@ -55,7 +55,7 @@ export default {
       namespace: 'App.Events.Notifications'
     });
 
-    window.Echo.channel('laravel_database_private-notification.user.00000000-0000-0000-0000-000000000000')
+    window.Echo.channel('e2g.private-notification.user.00000000-0000-0000-0000-000000000000')
         .listen('NotificationEvent', (e => {
           console.log(e)
         }))
